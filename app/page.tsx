@@ -9,6 +9,11 @@ interface Video {
   description: string;
   publishedAt: string;
   channelTitle: string;
+  thumbnailUrl: string;
+}
+
+interface ApiResponse {
+  videos: Video[];
 }
 
 export default function PlaylistVideos() {
@@ -18,7 +23,8 @@ export default function PlaylistVideos() {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await axios.get("/api/playlist"); // API endpoint fetching videos
+        // Replace with your actual endpoint to get all videos in the playlist
+        const response = await axios.get<ApiResponse>("/api/playlist"); // API endpoint fetching videos
         setVideos(response.data.videos || []);
       } catch (error) {
         console.error("Error fetching playlist videos:", error);
