@@ -1,4 +1,22 @@
+
 import { NextResponse } from 'next/server';
+
+interface YouTubeVideo {
+  snippet: {
+    resourceId: {
+      videoId: string;
+    };
+    title: string;
+    description: string;
+    thumbnails: {
+      medium: {
+        url: string;
+      };
+    };
+    publishedAt: string;
+    channelTitle: string;
+  };
+}
 
 export async function GET() {
   const apiKey = process.env.YOUTUBE_API_KEY;
@@ -28,8 +46,10 @@ export async function GET() {
 
     // Validate `data.items` is an array
     if (Array.isArray(data.items)) {
-      const formattedVideos = data.items.map((video: any) => {
+      // Use the defined `YouTubeVideo` interface
+      const formattedVideos = data.items.map((video: YouTubeVideo) => {
         const snippet = video.snippet;
+
         if (!snippet || !snippet.resourceId) {
           console.warn('Invalid video snippet:', video);
           return null;
